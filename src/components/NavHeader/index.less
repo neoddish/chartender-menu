@@ -1,0 +1,42 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+
+  .corner,
+  .top-center {
+    padding: 10px 10px;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .corner {
+    flex-grow: 1;
+    width: 25%;
+  }
+
+  .corner.left {
+    justify-content: left;
+  }
+
+  .corner.right {
+    justify-content: right;
+  }
+
+  .top-center {
+    justify-content: space-around;
+    flex-grow: 2;
+    width: 50%;
+  }
+
+  .logo {
+    .logo-image {
+      vertical-align: baseline;
+      height: 100%;
+      width: 100%;
+      max-width: 100px;
+    }
+  }
+}
