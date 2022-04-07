@@ -52,6 +52,12 @@ function createMenubarApp() {
 
     if (isDev) menuBar.window.webContents.openDevTools();
   });
+
+  menuBar.on("focus-lost", () => {
+    if (!isDev) {
+      menuBar.hideWindow();
+    }
+  });
 }
 
 app.on("ready", createMenubarApp);

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import MonacoEditor from "react-monaco-editor";
 import classNames from "classnames";
 
@@ -9,7 +9,6 @@ export interface EditorViewProps {
   prefixCls?: string;
   className?: string;
   style?: React.CSSProperties;
-  onChange: (str: string) => void;
 }
 
 function editorWillMount(monaco: any) {
@@ -28,9 +27,14 @@ export const EditorView: React.FC<EditorViewProps> = ({
   prefixCls = "editorview",
   className,
   style,
-  onChange,
   ...restProps
 }) => {
+  const { dataInString, setDataInString } = useContext(DataContext);
+
+  const onChange = (newContent: string) => {
+    setDataInString(newContent);
+  };
+
   const compClassName = classNames(`${prefixCls}`, className);
 
   const compStyle = {
@@ -40,14 +44,12 @@ export const EditorView: React.FC<EditorViewProps> = ({
     margin: style?.margin || "auto",
   };
 
-  const { editorContent } = useContext(DataContext);
-
   return (
     <div {...restProps} className={compClassName} style={compStyle}>
       <MonacoEditor
         height="100%"
         language="json"
-        value={editorContent}
+        value={dataInString}
         editorWillMount={editorWillMount}
         onChange={onChange}
       />

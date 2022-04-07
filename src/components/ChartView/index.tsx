@@ -11,18 +11,20 @@ export interface ChartViewProps {
   prefixCls?: string;
   className?: string;
   style?: React.CSSProperties;
-  data: any;
 }
 
 export const ChartView: React.FC<ChartViewProps> = ({
   prefixCls = "chartview",
   className,
   style,
-  data,
   ...restProps
 }) => {
   /** Canvas for chart */
   const canvas = useRef(null);
+
+  const { dataInString } = useContext(DataContext);
+
+  const isValidDataStr = isValidJsonData(dataInString);
 
   const compClassName = classNames(`${prefixCls}`, className);
 
@@ -32,10 +34,13 @@ export const ChartView: React.FC<ChartViewProps> = ({
     width: style?.width || "100%",
     margin: style?.margin || "auto",
   };
+  if (!isValidDataStr) {
+    compStyle.opacity = 0.4;
+  }
 
   useEffect(() => {
-    if (canvas.current && isValidJsonData(data)) {
-      const results = myChartAdvisor.advise({ data });
+    if (canvas.current && isValidDataStr) {
+      const results = myChartAdvisor.advise({ data: JSON.parse(dataInString) });
       if (results && results.length) {
         const result = results[0];
         const resultSpec = result.spec;
@@ -44,15 +49,13 @@ export const ChartView: React.FC<ChartViewProps> = ({
     }
   });
 
-  const { editorContent } = useContext(DataContext);
-
   return (
     <div {...restProps} className={compClassName}>
       <div ref={canvas} style={compStyle} />
       <div
         id="errormsg"
         className="vis-mask"
-        style={!isValidJsonData(editorContent) ? { bottom: 0 } : {}}
+        style={!isValidDataStr ? { bottom: 0 } : {}}
       >
         <h2>invalid data!</h2>
       </div>

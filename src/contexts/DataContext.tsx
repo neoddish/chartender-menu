@@ -1,5 +1,13 @@
 import { createContext } from "react";
 
-export const DataContext = createContext({
-  editorContent: "",
-});
+interface IDataContext {
+  dataInString: string;
+  setDataInString: (dataStr: string) => void;
+}
+
+const defaultState: IDataContext = {
+  dataInString: "",
+  setDataInString: () => {},
+};
+
+export const DataContext = createContext<IDataContext>(defaultState);

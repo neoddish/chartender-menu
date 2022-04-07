@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useRef } from "react";
 
-import { Layout, Drawer, Button } from "antd";
+import { Layout, Drawer } from "antd";
 
-import { dataPresets } from "./presets";
-import { ChartView, EditorView, NavHeader } from "./components";
+import { DataView, ChartView, NavHeader } from "./components";
 import { DataContext } from "./contexts";
-import { isValidJsonData, formatJSONObject } from "./utils";
 
 import "./index.less";
 
@@ -15,32 +13,11 @@ export default function App() {
   /** Main DOM Container */
   const mainContainer = useRef<HTMLDivElement>(null);
 
+  /** is Chart Drawer visible */
   const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
 
-  const [currentDataPreset, setCurrentDataPreset] = useState<string>(
-    Object.keys(dataPresets)[0]
-  );
-
-  const defaultEditorContent = (dataPresets as any)[currentDataPreset];
-
-  const [lastEditorContent, setLastEditorContent] =
-    useState<any>(defaultEditorContent);
-  const [editorContent, _setEditorContent] = useState<string>(
-    formatJSONObject(defaultEditorContent)
-  );
-
-  const setEditorContent = (editorContent: string) => {
-    if (isValidJsonData(editorContent)) {
-      setLastEditorContent(JSON.parse(editorContent));
-    }
-    _setEditorContent(editorContent);
-  };
-
-  const editorChange = (newContent: string) => {
-    setEditorContent(newContent);
-  };
-
-  const dataStates = useMemo(() => ({ editorContent }), [editorContent]);
+  /** Active dataset of the whole app as string, string for editor changing */
+  const [dataInString, setDataInString] = useState<string>("");
 
   const showDrawer = () => {
     setDrawerVisible(true);
@@ -51,7 +28,7 @@ export default function App() {
   };
 
   return (
-    <DataContext.Provider value={dataStates}>
+    <DataContext.Provider value={{ dataInString, setDataInString }}>
       <Layout className="the-layout">
         <NavHeader
           className="the-header"
@@ -60,7 +37,7 @@ export default function App() {
         />
         <Content className="the-content">
           <div className="main-content" ref={mainContainer}>
-            <EditorView onChange={editorChange} />
+            <DataView />
 
             <Drawer
               title="ChartForYou"
@@ -72,11 +49,7 @@ export default function App() {
               getContainer={false}
               style={{ position: "absolute" }}
             >
-              <ChartView
-                data={lastEditorContent}
-                className="vis"
-                style={!isValidJsonData(editorContent) ? { opacity: 0.4 } : {}}
-              />
+              <ChartView className="vis" />
             </Drawer>
           </div>
         </Content>
