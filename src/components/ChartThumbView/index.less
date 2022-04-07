@@ -1,0 +1,25 @@
+.chartthumbview {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  .chartthumb {
+    height: 110px;
+    width: auto;
+    min-width: 100px;
+    margin: 6px 16px 6px 12px;
+    padding: 4px;
+    border: 1px solid #dcdcdc;
+    display: flex;
+
+    .thumb {
+      height: 100px;
+      width: 100px;
+      margin: auto;
+    }
+  }
+}
+.chartthumbview::-webkit-scrollbar {
+  display: none;
+}

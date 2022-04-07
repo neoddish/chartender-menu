@@ -2,26 +2,49 @@
   position: relative;
   height: 100%;
   width: 100%;
+  padding: 0 10px;
   overflow: hidden;
-}
-
-.vis {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-}
-
-.vis-mask {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  background-color: rgba(141, 65, 65, 0.5);
-  bottom: -100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
 
-  h2 {
-    color: black;
+  .charttoolbar {
+    margin: 10px 0;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .left,
+    .right {
+      display: flex;
+      gap: 10px;
+    }
+
+    .left {
+      flex-direction: row;
+      justify-content: left;
+    }
+
+    .right {
+      flex-direction: row-reverse;
+      justify-content: right;
+    }
   }
+
+  .chartview-canvas {
+    height: 300px;
+    width: 400px;
+    outline: 1px solid #dcdcdc99;
+    margin: 0 auto;
+    padding: 20px;
+  }
+}
+
+.pic-export-popover {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
 }

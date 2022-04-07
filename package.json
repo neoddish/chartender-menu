@@ -30,6 +30,7 @@
     "@antv/chart-advisor": "^2.0.0",
     "@antv/g2plot": "^2.4.14",
     "@antv/g6": "^4.6.4",
+    "@antv/thumbnails-component": "^2.0.0",
     "@babel/core": "^7.17.8",
     "ajv": "^8.11.0",
     "antd": "^4.19.3",

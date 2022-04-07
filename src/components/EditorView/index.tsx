@@ -3,7 +3,7 @@ import MonacoEditor from "react-monaco-editor";
 import classNames from "classnames";
 
 import jsondataSchema from "../../jsondataSchema.json";
-import { DataContext } from "../../contexts";
+import { MetaContext } from "../../contexts";
 
 export interface EditorViewProps {
   prefixCls?: string;
@@ -29,7 +29,7 @@ export const EditorView: React.FC<EditorViewProps> = ({
   style,
   ...restProps
 }) => {
-  const { dataInString, setDataInString } = useContext(DataContext);
+  const { dataInString, setDataInString } = useContext(MetaContext);
 
   const onChange = (newContent: string) => {
     setDataInString(newContent);
@@ -39,9 +39,6 @@ export const EditorView: React.FC<EditorViewProps> = ({
 
   const compStyle = {
     ...style,
-    height: style?.height || "100%",
-    width: style?.width || "100%",
-    margin: style?.margin || "auto",
   };
 
   return (

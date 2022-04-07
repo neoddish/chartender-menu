@@ -5,27 +5,17 @@ import { Layout, Button } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 
 import { InfoModal } from "../InfoModal";
-
+import { CompProps } from "../../interfaces";
 import logoWithText from "../../assets/textlogo.svg";
 
 import "./index.less";
 
 const { Header } = Layout;
 
-export interface NavHeaderProps {
-  prefixCls?: string;
-  className?: string;
-  style?: React.CSSProperties;
-  onDataClick: () => void;
-  onChartClick: () => void;
-}
-
-export const NavHeader: React.FC<NavHeaderProps> = ({
+export const NavHeader: React.FC<CompProps> = ({
   prefixCls = "header",
   className,
   style,
-  onDataClick,
-  onChartClick,
   ...restProps
 }) => {
   const [infoModalVisible, setInfoModalVisible] = useState<boolean>(false);
@@ -47,28 +37,7 @@ export const NavHeader: React.FC<NavHeaderProps> = ({
       <div className="logo corner left">
         <img className="logo-image" src={logoWithText} />
       </div>
-      <div className="tabs top-center">
-        <Button
-          className="btn"
-          type="default"
-          shape="round"
-          style={{ width: "100px" }}
-          ghost
-          onClick={onDataClick}
-        >
-          Data
-        </Button>
-        <Button
-          className="btn"
-          type="default"
-          shape="round"
-          style={{ width: "100px" }}
-          ghost
-          onClick={onChartClick}
-        >
-          Chart
-        </Button>
-      </div>
+      <div className="tabs top-center"></div>
       <div className="btns corner right">
         <Button
           shape="circle"

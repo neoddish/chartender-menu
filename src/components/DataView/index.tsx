@@ -3,8 +3,11 @@ import classNames from "classnames";
 
 import { dataPresets } from "../../presets";
 import { EditorView } from "../EditorView";
+import { ChartThumbView } from "../ChartThumbView";
 import { formatJSONObject } from "../../utils";
-import { DataContext } from "../../contexts";
+import { MetaContext } from "../../contexts";
+
+import "./index.less";
 
 export interface DataViewProps {
   prefixCls?: string;
@@ -13,7 +16,7 @@ export interface DataViewProps {
 }
 
 export const DataView: React.FC<DataViewProps> = ({
-  prefixCls = "editorview",
+  prefixCls = "dataview",
   className,
   style,
   ...restProps
@@ -23,7 +26,7 @@ export const DataView: React.FC<DataViewProps> = ({
     Object.keys(dataPresets)[0]
   ];
 
-  const { dataInString, setDataInString } = useContext(DataContext);
+  const { dataInString, setDataInString } = useContext(MetaContext);
 
   useEffect(() => {
     if (!dataInString) {
@@ -42,7 +45,8 @@ export const DataView: React.FC<DataViewProps> = ({
 
   return (
     <div {...restProps} className={compClassName} style={compStyle}>
-      <EditorView />
+      <EditorView className="editor" />
+      <ChartThumbView className="chart-thumb" />
     </div>
   );
 };

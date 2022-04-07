@@ -1,19 +1,16 @@
 import React, { useContext, useEffect, useRef } from "react";
+
 import classNames from "classnames";
-import { specToG2Plot } from "@antv/antv-spec";
-import { ChartAdvisor } from "@antv/chart-advisor";
-import { DataContext } from "../../contexts";
+import { specToG2Plot, ChartAntVSpec } from "@antv/antv-spec";
+
+import { MetaContext } from "../../contexts";
 import { isValidJsonData } from "../../utils";
+import { CompProps } from "../../interfaces";
+import { ChartToolbar } from "./ChartToolbar";
 
-const myChartAdvisor = new ChartAdvisor();
+import "./index.less";
 
-export interface ChartViewProps {
-  prefixCls?: string;
-  className?: string;
-  style?: React.CSSProperties;
-}
-
-export const ChartView: React.FC<ChartViewProps> = ({
+export const ChartView: React.FC<CompProps> = ({
   prefixCls = "chartview",
   className,
   style,
@@ -22,43 +19,38 @@ export const ChartView: React.FC<ChartViewProps> = ({
   /** Canvas for chart */
   const canvas = useRef(null);
 
-  const { dataInString } = useContext(DataContext);
+  const { dataInString, advicesList, selectedAdviceIndex } =
+    useContext(MetaContext);
 
   const isValidDataStr = isValidJsonData(dataInString);
 
   const compClassName = classNames(`${prefixCls}`, className);
-
   const compStyle = {
     ...style,
-    height: style?.height || "100%",
-    width: style?.width || "100%",
-    margin: style?.margin || "auto",
   };
   if (!isValidDataStr) {
     compStyle.opacity = 0.4;
   }
 
   useEffect(() => {
-    if (canvas.current && isValidDataStr) {
-      const results = myChartAdvisor.advise({ data: JSON.parse(dataInString) });
-      if (results && results.length) {
-        const result = results[0];
-        const resultSpec = result.spec;
-        specToG2Plot(resultSpec, canvas.current);
+    if (canvas.current) {
+      if (
+        advicesList &&
+        selectedAdviceIndex >= 0 &&
+        advicesList.length > selectedAdviceIndex
+      ) {
+        const currentAdvice = advicesList[selectedAdviceIndex];
+        const { spec } = currentAdvice;
+
+        specToG2Plot(spec as ChartAntVSpec, canvas.current);
       }
     }
   });
 
   return (
-    <div {...restProps} className={compClassName}>
-      <div ref={canvas} style={compStyle} />
-      <div
-        id="errormsg"
-        className="vis-mask"
-        style={!isValidDataStr ? { bottom: 0 } : {}}
-      >
-        <h2>invalid data!</h2>
-      </div>
+    <div {...restProps} className={compClassName} style={compStyle}>
+      <ChartToolbar />
+      <div ref={canvas} className="chartview-canvas" />
     </div>
   );
 };
