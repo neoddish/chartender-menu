@@ -6,10 +6,9 @@
   "main": "./.webpack/main",
   "scripts": {
     "start": "electron-forge start",
-    "start:electron": "electron main.js",
-    "start:web": "webpack serve --port 1314",
-    "build:web": "Webpack ./app/web",
-    "electron-dev": "run-s start:web start:electron"
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "release": "electron-forge publish"
   },
   "repository": {
     "type": "git",
