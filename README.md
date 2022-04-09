@@ -1,3 +1,5 @@
+<img src="https://github.com/neoddish/chartender-menu/blob/main/src/assets/textlogo.svg" height="100" />
+
 # chartender-menu
 
 chartender on menubar - a widget generates charts for you.
