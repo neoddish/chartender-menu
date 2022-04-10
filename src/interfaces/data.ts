@@ -1,1 +1,2 @@
-export type JsonData = Record<string, any>;
+export type JsonDatum = Record<string, any>;
+export type JsonData = JsonDatum;

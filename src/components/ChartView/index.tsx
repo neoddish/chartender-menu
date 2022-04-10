@@ -1,11 +1,13 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import classNames from "classnames";
 import { specToG2Plot, ChartAntVSpec } from "@antv/antv-spec";
+import { Advice } from "@antv/chart-advisor";
 
 import { MetaContext } from "../../contexts";
+import { CHART_CONTAINER_ID } from "../../constants";
 import { isValidJsonData } from "../../utils";
-import { CompProps } from "../../interfaces";
+import { ChartConfig, CompProps } from "../../interfaces";
 import { ChartToolbar } from "./ChartToolbar";
 
 import "./index.less";
@@ -18,6 +20,12 @@ export const ChartView: React.FC<CompProps> = ({
 }) => {
   /** Canvas for chart */
   const canvas = useRef(null);
+
+  /** Current advice on ChartView */
+  const [currentChartConfig, setCurrentChartConfig] = useState<ChartConfig>({
+    chartType: "unknownChart",
+    chartSpec: null,
+  });
 
   const { dataInString, advicesList, selectedAdviceIndex } =
     useContext(MetaContext);
@@ -40,17 +48,18 @@ export const ChartView: React.FC<CompProps> = ({
         advicesList.length > selectedAdviceIndex
       ) {
         const currentAdvice = advicesList[selectedAdviceIndex];
-        const { spec } = currentAdvice;
-
+        const { spec, type } = currentAdvice;
         specToG2Plot(spec as ChartAntVSpec, canvas.current);
+
+        setCurrentChartConfig({ chartType: type, chartSpec: spec });
       }
     }
-  });
+  }, [advicesList, selectedAdviceIndex]);
 
   return (
     <div {...restProps} className={compClassName} style={compStyle}>
-      <ChartToolbar />
-      <div ref={canvas} className="chartview-canvas" />
+      <ChartToolbar chartConfig={currentChartConfig} />
+      <div ref={canvas} className="chartview-canvas" id={CHART_CONTAINER_ID} />
     </div>
   );
 };
