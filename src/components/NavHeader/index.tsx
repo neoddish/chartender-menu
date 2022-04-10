@@ -2,7 +2,11 @@ import React, { useState } from "react";
 
 import classNames from "classnames";
 import { Layout, Button } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import {
+  InfoCircleOutlined,
+  PushpinOutlined,
+  PushpinFilled,
+} from "@ant-design/icons";
 
 import { InfoModal } from "../InfoModal";
 import { CompProps } from "../../interfaces";
@@ -19,6 +23,7 @@ export const NavHeader: React.FC<CompProps> = ({
   ...restProps
 }) => {
   const [infoModalVisible, setInfoModalVisible] = useState<boolean>(false);
+  const [isPinned, setIsPinned] = useState<boolean>(false);
 
   const compClassName = classNames(`${prefixCls}`, className);
 
@@ -32,6 +37,12 @@ export const NavHeader: React.FC<CompProps> = ({
     ...style,
   };
 
+  const switchPin = () => {
+    const newPinState = !isPinned;
+    setIsPinned(newPinState);
+    window.Main.switchPin(newPinState);
+  };
+
   return (
     <Header {...restProps} className={compClassName} style={{ ...compStyle }}>
       <div className="logo corner left">
@@ -43,6 +54,11 @@ export const NavHeader: React.FC<CompProps> = ({
           shape="circle"
           icon={<InfoCircleOutlined />}
           onClick={() => setInfoModalVisible(true)}
+        />
+        <Button
+          shape="circle"
+          icon={isPinned ? <PushpinFilled /> : <PushpinOutlined />}
+          onClick={switchPin}
         />
       </div>
       <InfoModal

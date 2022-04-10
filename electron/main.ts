@@ -1,6 +1,6 @@
 import * as path from "path";
-import { app } from "electron";
-import { menubar } from "menubar";
+import { app, ipcMain } from "electron";
+import { Menubar, menubar } from "menubar";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -12,11 +12,13 @@ const assetsPath =
     ? path.join(process.resourcesPath, "assets")
     : path.join(app.getAppPath(), "assets");
 
+let menuBar: Menubar;
+
 function createMenubarApp() {
   const APP_WIDTH = 600;
   const APP_HEIGHT = 500;
 
-  const menuBar = menubar({
+  menuBar = menubar({
     icon: path.join(assetsPath, "/ChartenderMenuIcon.png").toString(),
     index: MAIN_WINDOW_WEBPACK_ENTRY,
     preloadWindow: true,
@@ -30,7 +32,7 @@ function createMenubarApp() {
       movable: false,
       fullscreenable: false,
       minimizable: false,
-      alwaysOnTop: true,
+      alwaysOnTop: false,
       webPreferences: {
         devTools: isDev,
         preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
@@ -45,19 +47,27 @@ function createMenubarApp() {
     app.dock.hide();
 
     menuBar.window.setMenu(null);
-  });
-
-  menuBar.on("show", () => {
-    if (!menuBar.window) return;
 
     if (isDev) menuBar.window.webContents.openDevTools();
   });
 
-  menuBar.on("focus-lost", () => {
-    if (!isDev) {
-      menuBar.hideWindow();
-    }
+  menuBar.on("show", () => {
+    if (!menuBar.window) return;
   });
 }
 
-app.on("ready", createMenubarApp);
+async function registerListeners() {
+  /**
+   * This comes from bridge integration, check bridge.ts
+   */
+
+  ipcMain.on("switchPin", (_, isPinned: boolean) => {
+    menuBar.window?.setAlwaysOnTop(isPinned);
+  });
+}
+
+app
+  .on("ready", createMenubarApp)
+  .whenReady()
+  .then(registerListeners)
+  .catch((e) => console.error(e));
