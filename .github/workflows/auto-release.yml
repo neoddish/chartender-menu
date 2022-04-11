@@ -1,0 +1,20 @@
+name: Auto Release
+on:
+  push:
+    branches:
+      - "stable"
+
+jobs:
+  release:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.EF_PUBLISH }}
+        run: npm run release
