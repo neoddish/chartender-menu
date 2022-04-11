@@ -12,7 +12,19 @@ Paste the data into the data view and Chartender-Menu will automatically recomma
 
 ## Download
 
-Coming soon...
+For MacOS: 
+
+* [Download latest here](https://github.com/neoddish/chartender-menu/releases/latest)
+* Allow this app in *System Preferences > Securtiy & Privacy > General*
+
+For Windows and Linux:
+
+* Clone this repository
+* Run `npm install`
+* Run `npm run package`
+* Find your executable in `<project>/out/`
+
+> Notice that I develop this app on MacOS, so there might be bugs on Windows/Linux. PRs welcome!
 
 ## Develop
 
@@ -28,6 +40,8 @@ npm start
 ```bash
 npm run package
 ```
+
+Find your executable in `<project>/out/`.
 
 ## Powered by
 
